@@ -1,3 +1,5 @@
  <b>Naive Bayes Gender Classifier</b>
  <br>
- This person has been classifed as <%= @gender %>
+ This person with a weight of <%= @person.weight %> and a height of <%= @person.height %> has been classifed as <%= @person.gender %>
+
+<%= link_to 'Click here to add new person', new_person_path %>
