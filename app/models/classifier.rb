@@ -70,7 +70,7 @@ class Classifier < ActiveRecord::Base
 				num *= attr_probability( value, arrayOfAttributes( gender, name ) ) 
 			}
 			
-			denom = 0
+			evidence = 0
 
 			for i in ['male', 'female']
 				num2 = probability( i )
