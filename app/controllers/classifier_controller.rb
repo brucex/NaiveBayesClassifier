@@ -5,7 +5,13 @@ class ClassifierController < ApplicationController
 	end
 
 	def classifierpage
-		gender = Classifier.classifier( params[:height_field], params[:weight_field] )
-		#@person = Person.new( gender: gender, height: params[:height_field], weight: params[:weight_field] )
+		gender = Classifier.classifier( classifier_params )
+		@person = Person.new( gender: gender, height: params[:height], weight: params[:weight] )
 	end
+	
+	def classifier_params
+      params.permit( :height, :weight )
+    end
+
+	private :classifier_params
 end

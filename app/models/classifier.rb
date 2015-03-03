@@ -1,11 +1,18 @@
 class Classifier < ActiveRecord::Base
+	
+	Fields = Struct.new :height, :weight
 
-	def self.classifier heightTxt, weightTxt	
-	#calculating probability of males, females, and posterior
-		height = heightTxt.to_i
-		weight = weightTxt.to_i
-		m_posterior = posterior('male', height, weight)
-		f_posterior = posterior('female', height, weight)
+	def self.classifier params	
+		
+		fields = Fields.new
+		
+		#add all params into the struct (assuming all values are numeric)
+		fields.each_pair { | name, value | 
+			fields[name] = params[name].to_i 
+		}
+
+		m_posterior = posterior('male', fields)
+		f_posterior = posterior('female', fields)
 		
 		#determining if a female or male
 		if f_posterior > m_posterior
@@ -13,70 +20,62 @@ class Classifier < ActiveRecord::Base
 		else 
 			gender = "male"
 		end
-		puts m_posterior
-		puts f_posterior
+		
 		gender
 	end
 
+	private
+		#return array of values from a specified column selected in db filtered by gender
+		def self.arrayOfAttributes gender, attribute
+			arr=Person.where(gender: gender).pluck(attribute)
+		end
 
-	def self.arrayOfWeights gender
-		weights_arr=Person.where(gender: gender).pluck(:weight)
-		puts "weight array: #{weights_arr.to_s}"
-		weights_arr
-	end
+		def self.mean attribute_arr
+			#puts attribute_arr.to_s
+			mean = attribute_arr.inject(0.0){ |sum,x| sum + x } / attribute_arr.size
+		end
 
-	def self.arrayOfHeights gender
-		heights_arr=Person.where(gender: gender).pluck(:height)
-		puts "height array: #{heights_arr.to_s}"
-		heights_arr
-	end
-	
+		def self.variance attribute_arr, mean
+			variance = (attribute_arr.inject(0.0){ |s,x| s + (x - mean)**2 }) / ( attribute_arr.size - 1 ) 
+		end
 
-	def self.mean attribute_arr
-		puts attribute_arr.to_s
-		mean = attribute_arr.inject(0.0){|sum,x| sum + x } / attribute_arr.size
-	end
+		#return probability 
+		def self.attr_probability attribute, attribute_arr
+			mean = mean(attribute_arr)
+			variance = variance(attribute_arr, mean)
+			prob = ( 1 / Math.sqrt( 2 * Math::PI * variance )) * (Math::E**(-(( attribute - mean )**2) / ( 2 * variance )))
+		end
 
-	def self.variance attribute_arr
-		mean = mean(attribute_arr)
-		variance = (attribute_arr.inject(0.0){|s,x| s + (x - mean)**2}) / (attribute_arr.size - 1) 
-	end
+		def self.probability gender
+			ppl_total = Person.count
+			gender_count = ( Person.where( gender: gender ).count ).to_f
+			prob = gender_count / ppl_total
+		end
 
-	#return probability 
-	def self.attr_probability attribute, attribute_arr
-		mean = mean(attribute_arr)
-		variance = variance(attribute_arr)
-		prob = (1 / Math.sqrt( 2 * Math::PI * variance )) * (Math::E**(-((attribute - mean)**2)/(2* variance)))
-	end
 
-	def self.probability gender
-		ppl_total = Person.count
-		gender_count = (Person.where(gender: gender).count).to_f
-		puts "the gender count is #{gender_count}"
-		puts "the ppl count is #{ppl_total}"
-		prob = gender_count / ppl_total
-	end
+		def self.posterior gender, fields
 
-	def self.posterior_numerator gender, height, weight
-		prob = probability(gender)
-		puts "the prob is #{prob}"
-		height_prob = attr_probability(height,arrayOfHeights(gender))
-		puts "the height_prob is #{height_prob}"
-		weight_prob = attr_probability(weight,arrayOfWeights(gender))
-		puts "the weight_prob is #{weight_prob}"
-		prob * height_prob * weight_prob
-	end
+			num = probability(gender)
 
-	def self.evidence height, weight
-		m_prob = posterior_numerator('male', height, weight)
-		f_prob = posterior_numerator('female', height, weight)
-		puts "the m_prob is #{m_prob}"
-		puts "the f_prob is #{f_prob}"
-		evid = m_prob + f_prob;
-	end
+			fields.each_pair { | name, value | 
+				num *= attr_probability( value, arrayOfAttributes( gender, name ) ) 
+			}
 
-	def self.posterior gender, height, weight
-		posterior_numerator(gender, height, weight)/ evidence(height, weight)
-	end
+			#num = posterior_numerator(gender, height, weight)
+			
+			denom = 0
 
+			for i in ['male','female']
+				num2 = probability(gender)
+				
+				fields.each_pair { | name, value | 
+					num2 *= attr_probability( value, arrayOfAttributes( i, name ) ) 
+				}
+
+				denom += num2
+			end
+
+			num / denom
+
+		end
 end
