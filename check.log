@@ -1,0 +1,40 @@
+=> Booting WEBrick
+=> Rails 4.0.2 application starting in development on http://0.0.0.0:3000
+=> Run `rails server -h` for more startup options
+=> Ctrl-C to shutdown server
+
+
+Started GET "/classifier/classifierpage?height=123&weight=213" for 127.0.0.1 at 2015-03-02 22:00:55 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by ClassifierController#classifierpage as HTML
+  Parameters: {"height"=>"123", "weight"=>"213"}
+  [1m[35m (0.3ms)[0m  SELECT COUNT(*) FROM "people" WHERE "people"."gender" = 'male'
+the count of male is 0
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT COUNT(*) FROM "people" WHERE "people"."gender" = 'male'[0m
+  [1m[35m (0.3ms)[0m  SELECT COUNT(*) FROM "people" WHERE "people"."gender" = 'female'
+  [1m[36m (0.3ms)[0m  [1mSELECT COUNT(*) FROM "people"[0m
+  [1m[35mCACHE (0.1ms)[0m  SELECT COUNT(*) FROM "people" WHERE "people"."gender" = 'male'
+  [1m[36m (0.3ms)[0m  [1mSELECT "people"."height" FROM "people" WHERE "people"."gender" = 'male'[0m
+mean array is []
+mean array  size is 0
+mean is NaN
+variance array is []
+variance array  size is 0
+variance is -0.0
+Completed 500 Internal Server Error in 52ms
+
+TypeError (nil can't be coerced into Float):
+  app/models/classifier.rb:55:in `*'
+  app/models/classifier.rb:55:in `attr_probability'
+  app/models/classifier.rb:70:in `block in posterior'
+  app/models/classifier.rb:69:in `each_pair'
+  app/models/classifier.rb:69:in `posterior'
+  app/models/classifier.rb:14:in `classifier'
+  app/controllers/classifier_controller.rb:13:in `classifierpage'
+
+
+  Rendered /usr/lib/ruby/vendor_ruby/action_dispatch/middleware/templates/rescues/_source.erb (1.6ms)
+  Rendered /usr/lib/ruby/vendor_ruby/action_dispatch/middleware/templates/rescues/_trace.erb (2.7ms)
+  Rendered /usr/lib/ruby/vendor_ruby/action_dispatch/middleware/templates/rescues/_request_and_response.erb (4.8ms)
+  Rendered /usr/lib/ruby/vendor_ruby/action_dispatch/middleware/templates/rescues/diagnostics.erb within rescues/layout (36.1ms)
+Exiting

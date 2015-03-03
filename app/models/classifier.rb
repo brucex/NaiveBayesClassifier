@@ -31,18 +31,27 @@ class Classifier < ActiveRecord::Base
 		end
 
 		def self.mean attribute_arr
-			#puts attribute_arr.to_s
+			#puts "mean array is #{attribute_arr.to_s }"
+			#puts "mean array  size is #{attribute_arr.size }"
+			
 			mean = attribute_arr.inject(0.0){ |sum,x| sum + x } / attribute_arr.size
+
+			#puts "mean is #{mean}"
+			
+			
 		end
 
 		def self.variance attribute_arr, mean
-			variance = (attribute_arr.inject(0.0){ |s,x| s + (x - mean)**2 }) / ( attribute_arr.size - 1 ) 
+			#puts "variance array is #{attribute_arr.to_s }"
+			#puts "variance array  size is #{attribute_arr.size }"
+			variance = (attribute_arr.inject(0.0){ |s,x| s + (x - mean)**2 }) / ( attribute_arr.size - 1 )
+			#puts "variance is #{variance}"
 		end
 
 		#return probability 
 		def self.attr_probability attribute, attribute_arr
-			mean = mean(attribute_arr)
-			variance = variance(attribute_arr, mean)
+			mean = mean( attribute_arr )
+			variance = variance( attribute_arr, mean )
 			prob = ( 1 / Math.sqrt( 2 * Math::PI * variance )) * (Math::E**(-(( attribute - mean )**2) / ( 2 * variance )))
 		end
 
@@ -55,7 +64,7 @@ class Classifier < ActiveRecord::Base
 
 		def self.posterior gender, fields
 
-			num = probability(gender)
+			num = probability( gender )
 
 			fields.each_pair { | name, value | 
 				num *= attr_probability( value, arrayOfAttributes( gender, name ) ) 
@@ -65,8 +74,8 @@ class Classifier < ActiveRecord::Base
 			
 			denom = 0
 
-			for i in ['male','female']
-				num2 = probability(gender)
+			for i in ['male', 'female']
+				num2 = probability( gender )
 				
 				fields.each_pair { | name, value | 
 					num2 *= attr_probability( value, arrayOfAttributes( i, name ) ) 
