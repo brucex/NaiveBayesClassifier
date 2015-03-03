@@ -69,22 +69,20 @@ class Classifier < ActiveRecord::Base
 			fields.each_pair { | name, value | 
 				num *= attr_probability( value, arrayOfAttributes( gender, name ) ) 
 			}
-
-			#num = posterior_numerator(gender, height, weight)
 			
 			denom = 0
 
 			for i in ['male', 'female']
-				num2 = probability( gender )
+				num2 = probability( i )
 				
 				fields.each_pair { | name, value | 
 					num2 *= attr_probability( value, arrayOfAttributes( i, name ) ) 
 				}
 
-				denom += num2
+				evidence += num2 #evidence = m_prob + f_prob
 			end
 
-			num / denom
+			num / evidence
 
 		end
 end
