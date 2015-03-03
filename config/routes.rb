@@ -1,7 +1,9 @@
 NaiveBayes::Application.routes.draw do
-  root 'people#index'
-
   resources :people
+
+  root 'home#index'
+  
+  get 'people/index'
 
   get 'classifier/index'
 
