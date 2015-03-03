@@ -6,9 +6,9 @@
 
      <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home<span class="sr-only">(current)</span></a></li>
-        <li><a href="/people">Database Listings</a></li>
-        <li><a href="/classifier/index">Classifier</a></li>
-      </ul>
+
+        <li class="<%= is_active?('/') %>"><%= link_to "Home", '/' %></li>
+        <li class="<%= is_active?('/people') %>"><%= link_to "Database Listings", '/people' %></li>
+        <li class="<%= is_active?('/classifier/index') %>"><%= link_to "Classifier", '/classifier/index' %></li>
   </div>
 </nav>

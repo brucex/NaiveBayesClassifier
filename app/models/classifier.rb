@@ -1,6 +1,13 @@
 class Classifier < ActiveRecord::Base
 
 	Fields = Struct.new :height, :weight
+=begin
+	def initialize
+		@height = ""
+		@weight = ""
+	end
+=end
+
 
 	def self.classifier params	
 		

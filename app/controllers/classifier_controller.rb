@@ -1,10 +1,11 @@
 class ClassifierController < ApplicationController
 
 	def index
-		
+		#@person = Classifier.new
 	end
 
 	def classifierpage
+
 		if ( Person.where(gender: 'male').count < 2 || Person.where(gender: 'female').count < 2 )
 			redirect_to :back, :notice => "Must have 2 males and 2 females in databases"
 		
@@ -17,7 +18,8 @@ class ClassifierController < ApplicationController
 	end
 	
 	def classifier_params
-      params.permit( :height, :weight )
+      #params.require(:person).permit( :height, :weight )
+    	params.permit( :height, :weight )
     end
 
 	private :classifier_params

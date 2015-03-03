@@ -1,5 +1,17 @@
  <b>Naive Bayes Gender Classifier</b>
- <br>
- This person with a weight of <%= @person.weight %> and a height of <%= @person.height %> has been classifed as <%= @person.gender %>
+ </br>
+ A person with a weight of <%= @person.weight %> and a height of <%= @person.height %> has been classifed as <%= @person.gender %>
 
+<p></p>
+
+<% if @person.gender == "female" %>
+	<a title="By MarcusWerthmann (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons" href="http://commons.wikimedia.org/wiki/File%3AGender-Symbol_Female_dark_transparent_Background.png"><img width="256" alt="Gender-Symbol Female dark transparent Background" src="//upload.wikimedia.org/wikipedia/commons/3/32/Gender-Symbol_Female_dark_transparent_Background.png"/></a>
+
+<% else %>
+
+	<a title="By MarcusWerthmann (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons" href="http://commons.wikimedia.org/wiki/File%3AGender-Symbol_Male_dark_transparent_Background.png"><img width="256" alt="Gender-Symbol Male dark transparent Background" src="//upload.wikimedia.org/wikipedia/commons/c/c3/Gender-Symbol_Male_dark_transparent_Background.png"/></a>
+
+<% end %>
+
+</br>
 <%= link_to 'Click here to add new person', new_person_path %>
