@@ -3,11 +3,11 @@ NaiveBayes::Application.routes.draw do
 
   root 'home#index'
   
-  get 'people/index'
+  #get 'people/index'
 
-  get 'classifier/index'
+  get 'classifier/' => 'classifier#index'
 
-  get 'classifier/classifierpage'
+  get 'classifier/classifierpage/' => 'classifier#classifierpage'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

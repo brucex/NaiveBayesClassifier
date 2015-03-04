@@ -1,7 +1,8 @@
+require 'classifier'
+
 class ClassifierController < ApplicationController
 
 	def index
-		#@person = Classifier.new
 	end
 
 	def classifierpage
@@ -12,9 +13,10 @@ class ClassifierController < ApplicationController
 		elsif params[:height].blank? || params[:weight].blank?
 			redirect_to :back, :notice => "Fields cannot be blank"
 		else
-			gender = Classifier.classifier( classifier_params )
-			@person = Person.new( gender: gender, height: params[:height], weight: params[:weight] )
+			gender = Classifier.classify( classifier_params )
+			@person = Person.new(gender: gender, height: params[:height], weight: params[:weight])
 		end
+		
 	end
 	
 	def classifier_params
