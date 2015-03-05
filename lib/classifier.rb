@@ -34,7 +34,7 @@ class Classifier
 		# Takes in a gender of 'male' or 'female' and a attribute of Person
 		# Return array of values from a specified column selected in db filtered by gender
 		def arrayOfAttributes(gender, attribute)
-		  Person.where(gender: gender).pluck(attribute)
+		  array = Person.where(gender: gender).pluck(attribute)
 		end
 
 		# Takes in an array of values
@@ -43,57 +43,56 @@ class Classifier
 		  mean = attribute_arr.inject(0.0){ |sum,x| sum + x } / attribute_arr.size					
 		end
 
-			# Takes in an array of values and the mean
-			# Takes in an array of mean so it doesnt have to be calculated twice in the attr_probability method
-			# Returns the variance
-			def variance(attribute_arr, mean)
-				variance = (attribute_arr.inject(0.0){ |s,x| s + (x - mean)**2 }) / ( attribute_arr.size - 1 )
-			end
+		# Takes in an array of values and the mean
+		# Takes in an array of mean so it doesnt have to be calculated twice in the attr_probability method
+		# Returns the variance
+		def variance(attribute_arr, mean)
+		  variance = (attribute_arr.inject(0.0){ |s,x| s + (x - mean)**2 }) / ( attribute_arr.size - 1 )
+		end
 
-			# Takes in the value of the attribute the user submitted and 
-			# the array of values of an attribute in the Person table 
-			# Returns the probability of the sample having similiar attributes
-			def attr_probability(attribute, attribute_arr)
-				mean = mean(attribute_arr)
-				variance = variance(attribute_arr, mean)
-				prob = (1 / Math.sqrt(2 * Math::PI * variance)) * (Math::E**(-((attribute - mean)**2) / (2 * variance)))
-			end
+		# Takes in the value of the attribute the user submitted and 
+		# the array of values of an attribute in the Person table 
+		# Returns the probability of the sample having similiar attributes
+		def attr_probability(attribute, attribute_arr)
+		  mean = mean(attribute_arr)
+		  variance = variance(attribute_arr, mean)
+		  prob = (1 / Math.sqrt(2 * Math::PI * variance)) * (Math::E**(-((attribute - mean)**2) / (2 * variance)))
+		end
 
-			# Takes in a gender string of 'male' or 'female'
-			# Returns the probability a gender based on values in Person table
-			def probability(gender)
-				ppl_total = Person.count
-				gender_count = (Person.where(gender: gender).count).to_f
-				prob = gender_count / ppl_total
-			end
+		# Takes in a gender string of 'male' or 'female'
+		# Returns the probability a gender based on values in Person table
+		def probability(gender)
+		  ppl_total = Person.count
+	  	  gender_count = (Person.where(gender: gender).count).to_f
+		  prob = gender_count / ppl_total
+		end
 
-			# Takes in a gender 'male' or 'female'
-			# Takes in a Field structure with the attributes we want to sample against
-			# Returns the probability of the sample being a certain gender  
-			def posterior(gender, fields)
-				# Calculating the numerator for the posterior
-				numerator = probability(gender)
+		# Takes in a gender 'male' or 'female'
+		# Takes in a Field structure with the attributes we want to sample against
+		# Returns the probability of the sample being a certain gender  
+		def posterior(gender, fields)
+	      # Calculating the numerator for the posterior
+		  numerator = probability(gender)
 
-				fields.each_pair { | name, value | 
-					numerator *= attr_probability(value, arrayOfAttributes(gender, name))
-				}
+		  fields.each_pair { | name, value | 
+    		numerator *= attr_probability(value, arrayOfAttributes(gender, name))
+		  }
 				
-				evidence = 0
+		  evidence = 0
 
-				# Calculating the evidence/denominator for the posterior
-				# Evidence is the male probability + the female probability
-				for i in ['male', 'female']
-					num = probability(i)
+		  # Calculating the evidence/denominator for the posterior
+		  # Evidence is the male probability + the female probability
+		  for i in ['male', 'female']
+    		num = probability(i)
 					
-					# Multiplying all the probability attributes of a gender
-					fields.each_pair { | name, value | 
-						num *= attr_probability(value, arrayOfAttributes(i, name))
-					}
+		    # Multiplying all the probability attributes of a gender
+		    fields.each_pair { | name, value | 
+			  num *= attr_probability(value, arrayOfAttributes(i, name))
+		 	}
 
-					evidence += num 
-				end
-
-				numerator / evidence
-			end
+			evidence += num 
+		  end
+		  numerator / evidence
+		end
   end
 end
