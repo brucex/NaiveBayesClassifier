@@ -5,7 +5,7 @@ class ClassifierController < ApplicationController
 	def index
 	end
 
-	def classifierpage
+	def classifierresults
 	  if Person.where(gender: 'male').count < 2 || Person.where(gender: 'female').count < 2
 		redirect_to :back, :notice => "Must have 2 males and 2 females in databases"
 	  elsif params[:height].blank? || params[:weight].blank?

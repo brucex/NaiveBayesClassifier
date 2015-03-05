@@ -2,12 +2,10 @@ NaiveBayes::Application.routes.draw do
   resources :people
 
   root 'home#index'
-  
-  #get 'people/index'
 
   get 'classifier/' => 'classifier#index'
 
-  get 'classifier/classifierpage/' => 'classifier#classifierpage'
+  get 'classifier/classifierresults/' => 'classifier#classifierresults'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
