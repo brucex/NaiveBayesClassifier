@@ -33,27 +33,27 @@ class Classifier
 
 		# Takes in a gender of 'male' or 'female' and a attribute of Person
 		# Return array of values from a specified column selected in db filtered by gender
-		def arrayOfAttributes(gender, attribute)
+		def arrayOfAttributes(gender, attribute) #:doc:
 		  array = Person.where(gender: gender).pluck(attribute)
 		end
 
 		# Takes in an array of values
 		# Returns the mean
-		def mean(attribute_arr)
+		def mean(attribute_arr) #:doc:
 		  mean = attribute_arr.inject(0.0){ |sum,x| sum + x } / attribute_arr.size					
 		end
 
 		# Takes in an array of values and the mean
 		# Takes in an array of mean so it doesnt have to be calculated twice in the attr_probability method
 		# Returns the variance
-		def variance(attribute_arr, mean)
+		def variance(attribute_arr, mean) #:doc:
 		  variance = (attribute_arr.inject(0.0){ |s,x| s + (x - mean)**2 }) / ( attribute_arr.size - 1 )
 		end
 
 		# Takes in the value of the attribute the user submitted and 
 		# the array of values of an attribute in the Person table 
 		# Returns the probability of the sample having similiar attributes
-		def attr_probability(attribute, attribute_arr)
+		def attr_probability(attribute, attribute_arr) #:doc:
 		  mean = mean(attribute_arr)
 		  variance = variance(attribute_arr, mean)
 		  prob = (1 / Math.sqrt(2 * Math::PI * variance)) * (Math::E**(-((attribute - mean)**2) / (2 * variance)))
@@ -61,7 +61,7 @@ class Classifier
 
 		# Takes in a gender string of 'male' or 'female'
 		# Returns the probability a gender based on values in Person table
-		def probability(gender)
+		def probability(gender) #:doc:
 		  ppl_total = Person.count
 	  	  gender_count = (Person.where(gender: gender).count).to_f
 		  prob = gender_count / ppl_total
@@ -70,7 +70,7 @@ class Classifier
 		# Takes in a gender 'male' or 'female'
 		# Takes in a Field structure with the attributes we want to sample against
 		# Returns the probability of the sample being a certain gender  
-		def posterior(gender, fields)
+		def posterior(gender, fields) #:doc:
 	      # Calculating the numerator for the posterior
 		  numerator = probability(gender)
 

@@ -1,0 +1,11 @@
+Wed, 04 Mar 2015 22:14:21 -0500
+README.rdoc	Sun, 01 Mar 2015 10:40:28 -0500
+app/controllers/application_controller.rb	Tue, 03 Mar 2015 23:49:38 -0500
+app/controllers/classifier_controller.rb	Wed, 04 Mar 2015 20:58:54 -0500
+app/controllers/home_controller.rb	Mon, 02 Mar 2015 23:30:07 -0500
+app/controllers/people_controller.rb	Wed, 04 Mar 2015 20:21:38 -0500
+app/helpers/application_helper.rb	Wed, 04 Mar 2015 20:14:46 -0500
+app/helpers/classifier_helper.rb	Tue, 03 Mar 2015 23:52:11 -0500
+app/helpers/people_helper.rb	Sun, 01 Mar 2015 10:42:12 -0500
+app/models/person.rb	Wed, 04 Mar 2015 20:57:37 -0500
+lib/classifier.rb	Wed, 04 Mar 2015 22:13:52 -0500
