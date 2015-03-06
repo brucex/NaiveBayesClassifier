@@ -1,8 +1,6 @@
-#require 'test_helper'
-require 'minitest/autorun'
-#require 'classifier'
+require 'test_helper'
 
-class ClassifierTest < Minitest::Test#ActiveSupport::TestCase
+class ClassifierTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
