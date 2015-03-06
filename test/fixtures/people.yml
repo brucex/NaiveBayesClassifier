@@ -11,6 +11,12 @@ two:
   weight: 1
 
 three:
-  gender: boy
-  height: 1
+  gender: male
+  height: 1323
+  weight: 132
+
+four:
+  gender: female
+  height: 1000
   weight: 1
+
