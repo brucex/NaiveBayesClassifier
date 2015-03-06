@@ -16,7 +16,7 @@ class Classifier
 	  # Returns gender of sample
 	  def classify(params)
 	  	fields = Fields.new
-			
+		
 		# Add all params entered by user into a structure (assuming all values are numeric)
 		# This will allow us to easily add more attributes in the future if we want 
 		fields.each_pair { | name, value | fields[name] = params[name].to_i }
