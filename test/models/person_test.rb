@@ -1,6 +1,7 @@
-require 'test_helper'
+require 'minitest/autorun'
+#require 'test_helper'
 
-class PersonTest < ActiveSupport::TestCase
+class PersonTest < Minitest::Test #ActiveSupport::TestCase
    test "the truth" do
      assert true
    end
