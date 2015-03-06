@@ -1,11 +1,16 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  gender: MyString
+  gender: male
+  height: 10000
+  weight: 1000
+
+two:
+  gender: female
   height: 1
   weight: 1
 
-two:
-  gender: MyString
+three:
+  gender: boy
   height: 1
   weight: 1

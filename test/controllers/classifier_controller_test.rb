@@ -9,5 +9,6 @@ class ClassifierControllerTest < ActionController::TestCase
   	@request.env['HTTP_REFERER'] = 'http://localhost:3000/classifier/'
     get :classifierresults
     assert_response :success
+    assert_not_nil assigns(:person)
   end
 end
