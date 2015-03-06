@@ -1,4 +1,4 @@
-NaiveBayes::Application.routes.draw do
+NaiveBayesClassifier::Application.routes.draw do
   resources :people
 
   root 'home#index'
