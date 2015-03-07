@@ -1,28 +1,5 @@
-== README
+The Naives Bayes Sex Classifier is based on the Bayesian Theorem. The classifier will make a guess about the gender of a person. Given attributes (height, weight) inputted by the user, the classifier uses Bayesian Theorem and the current training data in the database to come to a conclusion about the gender. You can read more about the classifier here
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+In order to start, our training set must contain at least 2 males and 2 females people.
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+We have also assumed that all numerical inputs will be integers
